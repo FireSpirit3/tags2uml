@@ -34,7 +34,6 @@ func main() {
         return
     } else if ver {
         print_version()
-        log.Println("测试。。。。。")
         return
     } else if checkRange() == false {
         log.Println("Value of members or methods is out of range")
@@ -43,6 +42,7 @@ func main() {
     } else if fileExists(input_file) == false {
         log.Fatal("File ", input_file, " does not exist!\nPlease use --help for help\n")
     } else {
+        fmt.Println("开始转化")
         parseClass(input_file)
         parseMembersMethods(input_file)
         outs := dotmake()
