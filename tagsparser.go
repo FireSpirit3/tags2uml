@@ -21,6 +21,7 @@ import "fmt"
 import "bufio"
 import "regexp"
 import "strings"
+import "log"
 
 
 func parseClass(fn string) {
