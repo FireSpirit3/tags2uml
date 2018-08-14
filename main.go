@@ -28,12 +28,13 @@ func main() {
     init_datastore()
     parse_options()
     if help {
-        fmt.Println("The tags file must be created using the ctags option --fields=+latinK")
+        fmt.Println("tags文件必需通过 ctags 的参数 --fields=+latinK 来创建")
         fmt.Println("Usage of ", os.Args[0], ":")
         flag.PrintDefaults()
         return
     } else if ver {
         print_version()
+        log.Println("测试。。。。。")
         return
     } else if checkRange() == false {
         log.Println("Value of members or methods is out of range")
