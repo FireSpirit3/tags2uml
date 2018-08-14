@@ -69,6 +69,7 @@ rec := regexp.MustCompile(`class:([A-Za-z0-9_\.]+)`)
 rel := regexp.MustCompile(`language:([A-Za-z0-9_\#]+)`)
 ret := regexp.MustCompile(`\/\^([ ]*)([A-Za-z0-9_\.]+)([^A-Za-z0-9_]+)(.*)\$\/`)
 for scanner.Scan() {
+	log.Println("获取到行内容："+scanner.Text())
     match := re.FindStringSubmatch(scanner.Text())
     if (len(match) == 0) {continue}
     matchc := rec.FindStringSubmatch(scanner.Text())
