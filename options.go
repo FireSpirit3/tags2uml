@@ -45,11 +45,11 @@ func checkRange() bool {
 }
 
 func parse_options() {
-    flag.BoolVar(&opt_blackbox, "blackbox", false, "true for blackbox model, false for whitebox model (default=false)")
-    flag.BoolVar(&opt_inherit, "inherit", true, "true to display inheritance info, false to not display (default=true)")
-    flag.BoolVar(&opt_relationship, "relations", true, "true to display relationship info, false to not display (default=true)")
-    flag.IntVar(&opt_methods, "methods", 2, "0=methods not displayed, 1=all methods, 2=only public (default), 3=only public and protected")
-    flag.IntVar(&opt_members, "members", 2, "0=members not displayed, 1=all members, 2=only public (default), 3=only public and protected")
+    flag.BoolVar(&opt_blackbox, "blackbox", false, "true 是黑盒模型, false 是白盒模型 (默认=false)")
+    flag.BoolVar(&opt_inherit, "inherit", true, "true 是展示继承信息, false 是不展示 (默认=true)")
+    flag.BoolVar(&opt_relationship, "relations", true, "true 是展示关联信息, false 是不展示 (默认=true)")
+    flag.IntVar(&opt_methods, "methods", 2, "0=方法不展示, 1=所有方法, 2=仅public (默认), 3=仅 public 和 protected")
+    flag.IntVar(&opt_members, "members", 2, "0=成员不展示, 1=所有成员, 2=仅public (默认), 3=仅 public 和 protected")
     flag.StringVar(&input_file, "infile", "tags", "path to input file (default=\"tags\")")
     flag.StringVar(&output_file, "outfile", "-", "path to output file, use \"-\" for stdout (default=\"-\")")
     flag.BoolVar(&help, "help", false, "print help message")
