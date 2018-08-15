@@ -44,7 +44,8 @@ func main() {
     } else {
         fmt.Println("开始转化")
         parseClass(input_file)
-        parseMembersMethods(input_file)
+        //parseMembersMethods(input_file)
+        parseMembersMethodsTest(input_file)
         outs := dotmake()
         if (output_file == "-") {
             fmt.Println(outs)
