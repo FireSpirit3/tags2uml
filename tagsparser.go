@@ -71,12 +71,20 @@ rel := regexp.MustCompile(`language:([A-Za-z0-9_\#]+)`)
 ret := regexp.MustCompile(`\/\^([ ]*)([A-Za-z0-9_\.]+)([^A-Za-z0-9_]+)(.*)\$\/`)
 for scanner.Scan() {
 	log.Println("获取到行内容："+scanner.Text())
+    //整行语句-是否匹配捕获正则条件
     match := re.FindStringSubmatch(scanner.Text())
+    // 不匹配捕获条件
     if (len(match) == 0) {continue}
+    // 整行语句-是否匹配 class:的正则
     matchc := rec.FindStringSubmatch(scanner.Text())
     ci := classinfo_st{}
     var cn string
-    if (len(matchc) != 0) {cn = matchc[1]}
+    // 如果匹配到class的语句,一般如果tag的行是类名的话，一般那行会有2个class
+   //例如 : DictController  ./main/java/cc/mrbird/system/controller/DictController.java     /^public class DictController extends BaseController {$/;"      class   line:24 language:Java   inherits:BaseController
+    if (len(matchc) != 0) {
+	    //把匹配到的第一个class赋值给cn
+	    cn = matchc[1]}
+    // cnsep为cn中最后一个.的位置
     cnsep := strings.LastIndex(cn, ".")
     if (cnsep != -1) {
         cn = cn[cnsep+1:]
