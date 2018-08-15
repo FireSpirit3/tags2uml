@@ -70,11 +70,12 @@ rec := regexp.MustCompile(`class:([A-Za-z0-9_\.]+)`)
 rel := regexp.MustCompile(`language:([A-Za-z0-9_\#]+)`)
 ret := regexp.MustCompile(`\/\^([ ]*)([A-Za-z0-9_\.]+)([^A-Za-z0-9_]+)(.*)\$\/`)
 for scanner.Scan() {
-	log.Println("获取到行内容："+scanner.Text())
     //整行语句-是否匹配捕获正则条件
     match := re.FindStringSubmatch(scanner.Text())
     // 不匹配捕获条件
-    if (len(match) == 0) {continue}
+    if (len(match) == 0) {
+	    log.Println("不匹配捕获条件，行内容："+scanner.Text())
+	    continue}
     // 整行语句-是否匹配 class:的正则
     matchc := rec.FindStringSubmatch(scanner.Text())
     ci := classinfo_st{}
