@@ -190,6 +190,14 @@ for scanner.Scan() {
     if (len(matcht) != 0)&&(datatype_supported(matchl[1])) {
         datatype = matcht[2]
     }
+    if (thetype == "member")||(thetype == "field") {
+        memberinfo := memberinfo_st{match[1], access1, datatype}
+        ci.members = append(ci.members, memberinfo)
+    } else if (thetype == "function")||(thetype == "method") {
+        methodinfo := methodinfo_st{match[1], access1, datatype}
+        ci.methods = append(ci.methods, methodinfo)
+    }
+    classmap[ci.name] = ci
     
     
 }
