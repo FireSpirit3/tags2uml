@@ -81,11 +81,11 @@ for scanner.Scan() {
     ci := classinfo_st{}
     var cn string
     // 如果匹配到class的语句,一般如果tag的行是类名的话，一般那行会有2个class
-   //例如 : DictController  ./main/java/cc/mrbird/system/controller/DictController.java     /^public class DictController extends BaseController {$/;"      class   line:24 language:Java   inherits:BaseController
-	if (len(matchc) != 0) {
-         //把匹配到的第一个class赋值给cn
-	    cn = matchc[1]
-		log.Println("匹配到class:捕获条件，cn: "+cn +", 行内容："+scanner.Text())
+    //例如 : DictController  ./main/java/cc/mrbird/system/controller/DictController.java     /^public class DictController extends BaseController {$/;"      class   line:24 language:Java   inherits:BaseController
+   if (len(matchc) != 0) {
+        //把匹配到的第一个class赋值给cn
+	cn = matchc[1]
+        log.Println("匹配到class:捕获条件，cn: "+cn +", 行内容："+scanner.Text())
     } else {
         log.Println("不匹配class:捕获条件，行内容："+scanner.Text())
     }
@@ -122,6 +122,75 @@ for scanner.Scan() {
         ci.methods = append(ci.methods, methodinfo)
     }
     classmap[ci.name] = ci
+    
+}
+
+if err := scanner.Err(); err != nil {
+    fmt.Println(err)
+}
+
+}
+
+func parseMembersMethodsTest(fn string) {
+
+file, err := os.Open(fn)
+if err != nil {
+	fmt.Println(err)
+}
+
+scanner := bufio.NewScanner(file)
+re := regexp.MustCompile(`^([A-Za-z0-9_]+)\t([^\t]+)\t([^\t]+)\t([A-Za-z]+)`)
+rea := regexp.MustCompile(`access:([A-Za-z0-9_]+)`)
+rec := regexp.MustCompile(`class:([A-Za-z0-9_\.]+)`)
+rel := regexp.MustCompile(`language:([A-Za-z0-9_\#]+)`)
+ret := regexp.MustCompile(`\/\^([ ]*)([A-Za-z0-9_\.]+)([^A-Za-z0-9_]+)(.*)\$\/`)
+for scanner.Scan() {
+    //整行语句-是否匹配捕获正则条件
+    match := re.FindStringSubmatch(scanner.Text())
+    // 不匹配捕获条件
+    if (len(match) == 0) {
+	    //log.Println("不匹配捕获条件，行内容："+scanner.Text())
+	    continue}
+    // 整行语句-是否匹配 class:的正则
+    matchc := rec.FindStringSubmatch(scanner.Text())
+    ci := classinfo_st{}
+    var cn string
+    // 如果匹配到class的语句,一般如果tag的行是类名的话，一般那行会有2个class
+    //例如 : DictController  ./main/java/cc/mrbird/system/controller/DictController.java     /^public class DictController extends BaseController {$/;"      class   line:24 language:Java   inherits:BaseController
+   if (len(matchc) != 0) {
+        //把匹配到的第一个class赋值给cn
+	cn = matchc[1]
+        log.Println("匹配到class:捕获条件，cn: "+cn +", 行内容："+scanner.Text())
+    } else {
+        log.Println("不匹配class:捕获条件，行内容："+scanner.Text())
+    }
+    // cnsep为cn中最后一个.的位置
+    cnsep := strings.LastIndex(cn, ".")
+    if (cnsep != -1) {
+        cn = cn[cnsep+1:]
+	log.Println("用点.分割后cn的值："+cn)
+    }
+    if (len(cn) != 0) {ci = classmap[cn]}
+    if (len(ci.name) == 0) {continue}
+    matcha := rea.FindStringSubmatch(scanner.Text())
+    matchl := rel.FindStringSubmatch(scanner.Text())
+    access1 := " "
+    if (len(matcha) != 0) {
+        if matcha[1] == "public" {
+           access1 = "+"
+        } else if matcha[1] == "private" {
+           access1 = "-"
+        } else if matcha[1] == "protected" {
+           access1 = "#"
+        }
+    }
+    thetype := match[4]
+    matcht := ret.FindStringSubmatch(remove_keywords(scanner.Text()))
+    datatype := ""
+    if (len(matcht) != 0)&&(datatype_supported(matchl[1])) {
+        datatype = matcht[2]
+    }
+    
     
 }
 
